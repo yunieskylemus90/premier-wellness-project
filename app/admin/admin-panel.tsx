@@ -14,7 +14,7 @@ type Contact = {
   createdAt: string;
 };
 
-export default function AdminPanel({ adminEmail }: { adminEmail: string }) {
+export default function AdminPanel() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ export default function AdminPanel({ adminEmail }: { adminEmail: string }) {
   return <main className="admin-shell">
     <header className="admin-header">
       <div><span className="admin-eyebrow">Premier Wellness</span><h1>Panel de administración</h1><p>Solicitudes recibidas desde el sitio web.</p></div>
-      <div className="admin-actions"><span className="admin-user">{adminEmail}</span><a className="admin-logout" href="/signout-with-chatgpt?return_to=/"><LogOut size={16}/> Salir</a></div>
+      <div className="admin-actions"><a className="admin-logout" href="/api/admin/logout"><LogOut size={16}/> Salir</a></div>
     </header>
     <section className="admin-content">
       <div className="admin-toolbar"><div><strong>{contacts.length}</strong><span>solicitudes</span></div><label className="admin-search"><Search size={17}/><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nombre, teléfono o correo" /></label><button className="admin-refresh" onClick={() => void loadContacts()} disabled={loading} aria-label="Actualizar contactos"><RefreshCw size={17}/></button></div>

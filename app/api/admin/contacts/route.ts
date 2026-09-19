@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import { desc, eq } from "drizzle-orm";
-import { getChatGPTUser } from "../../../chatgpt-auth";
+import { cookies } from "next/headers";
 import { getDb } from "@/db";
 import { contactRequests } from "@/db/schema";
 
-function isAdmin(email: string) {
-  return (process.env.ADMIN_EMAILS ?? "").split(",").map((value) => value.trim().toLowerCase()).includes(email.toLowerCase());
-}
-
 async function requireAdmin() {
-  const user = await getChatGPTUser();
-  return user && isAdmin(user.email) ? user : null;
+  return (await cookies()).get("admin_session")?.value === "authenticated";
 }
 
 export async function GET() {
