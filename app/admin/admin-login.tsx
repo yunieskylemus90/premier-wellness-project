@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function AdminLogin() {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +19,7 @@ export default function AdminLogin() {
       body: JSON.stringify({ password }),
     });
     if (response.ok) {
-      window.location.href = "/admin";
+      router.push("/admin");
       return;
     }
     setError("Contraseña incorrecta");

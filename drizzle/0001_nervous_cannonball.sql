@@ -1,0 +1,1 @@
+ALTER TABLE `contact_requests` ADD `status` text DEFAULT 'new' NOT NULL;

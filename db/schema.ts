@@ -7,6 +7,7 @@ export const contactRequests = sqliteTable("contact_requests", {
   email: text("email"),
   preferredLanguage: text("preferred_language").notNull(),
   consent: integer("consent", { mode: "boolean" }).notNull(),
+  status: text("status").notNull().default("new"),
   source: text("source").notNull().default("website"),
   createdAt: text("created_at").notNull(),
 });

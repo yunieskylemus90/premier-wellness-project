@@ -14,6 +14,25 @@ export async function GET() {
   return NextResponse.json({ contacts });
 }
 
+export async function PATCH(request: Request) {
+  if (!await requireAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const url = new URL(request.url);
+  const id = Number(url.searchParams.get("id"));
+  const status = String(url.searchParams.get("status") ?? "").trim();
+
+  if (!Number.isInteger(id)) {
+    return NextResponse.json({ error: "Invalid contact id" }, { status: 400 });
+  }
+
+  if (!(["new", "contacted", "follow_up", "closed"] as const).includes(status as "new" | "contacted" | "follow_up" | "closed")) {
+    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+  }
+
+  await getDb().update(contactRequests).set({ status }).where(eq(contactRequests.id, id));
+  return NextResponse.json({ ok: true });
+}
+
 export async function DELETE(request: Request) {
   if (!await requireAdmin()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const id = Number(new URL(request.url).searchParams.get("id"));
